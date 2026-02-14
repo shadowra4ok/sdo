@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>UniFlow - СДО РГСУ</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Экран загрузки -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loading-spinner"></div>
+        <p>Загрузка...</p>
+    </div>
+
+    <!-- Экран авторизации в СДО -->
+    <div id="auth-screen" class="auth-screen hidden">
+        <div class="auth-container">
+            <div class="auth-header">
+                <div class="logo">📚</div>
+                <h1>Привязка СДО РГСУ</h1>
+                <p>Введите данные от sdo.rgsu.net</p>
+            </div>
+
+            <form id="auth-form">
+                <div class="form-group">
+                    <label>Логин от СДО</label>
+                    <input
+                        type="text"
+                        id="sdo-username"
+                        placeholder="Ваш логин"
+                        autocomplete="username"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label>Пароль от СДО</label>
+                    <input
+                        type="password"
+                        id="sdo-password"
+                        placeholder="Ваш пароль"
+                        autocomplete="current-password"
+                        required
+                    >
+                </div>
+
+                <div class="form-note">
+                    🔒 Данные хранятся безопасно и используются только для доступа к СДО РГСУ
+                </div>
+
+                <button type="submit" class="btn-primary">
+                    Войти в СДО
+                </button>
+            </form>
+
+            <div id="auth-error" class="error-message hidden"></div>
+        </div>
+    </div>
+
+    <!-- Главное приложение -->
+    <div id="app" class="hidden">
+        <!-- Табы -->
+        <div class="tabs">
+            <button class="tab active" data-page="dashboard">
+                <span class="tab-icon">🏠</span>
+                <span class="tab-label">Главная</span>
+            </button>
+            <button class="tab" data-page="courses">
+                <span class="tab-icon">📚</span>
+                <span class="tab-label">Курсы</span>
+            </button>
+            <button class="tab" data-page="schedule">
+                <span class="tab-icon">📅</span>
+                <span class="tab-label">Расписание</span>
+            </button>
+            <button class="tab" data-page="settings">
+                <span class="tab-icon">⚙️</span>
+                <span class="tab-label">Настройки</span>
+            </button>
+        </div>
+
+        <!-- Контент -->
+        <div class="content">
+            <!-- Dashboard -->
+            <div id="page-dashboard" class="page active">
+                <div class="page-header">
+                    <h2>Добро пожаловать!</h2>
+                    <p id="user-greeting">Студент РГСУ</p>
+                </div>
+
+                <div class="stats">
+                    <div class="stat-card">
+                        <div class="stat-icon">📚</div>
+                        <div class="stat-value" id="stat-courses">—</div>
+                        <div class="stat-label">Курсов</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">📅</div>
+                        <div class="stat-value" id="stat-lessons">—</div>
+                        <div class="stat-label">Занятий</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">🔔</div>
+                        <div class="stat-value" id="stat-events">—</div>
+                        <div class="stat-label">Событий</div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-header">
+                        <h3>Ближайшие занятия</h3>
+                        <button class="btn-link" onclick="switchPage('schedule')">Все →</button>
+                    </div>
+                    <div id="upcoming-lessons"></div>
+                </div>
+
+                <div class="section">
+                    <div class="section-header">
+                        <h3>Мои курсы</h3>
+                        <button class="btn-link" onclick="switchPage('courses')">Все →</button>
+                    </div>
+                    <div id="recent-courses"></div>
+                </div>
+            </div>
+
+            <!-- Курсы -->
+            <div id="page-courses" class="page">
+                <div class="page-header">
+                    <h2>Мои курсы</h2>
+                </div>
+
+                <div class="search-box">
+                    <input
+                        type="text"
+                        id="courses-search"
+                        placeholder="🔍 Поиск курсов..."
+                    >
+                </div>
+
+                <div id="courses-list"></div>
+            </div>
+
+            <!-- Расписание -->
+            <div id="page-schedule" class="page">
+                <div class="page-header">
+                    <h2>Расписание</h2>
+                </div>
+
+                <div class="week-selector">
+                    <button class="btn-icon" id="prev-week">‹</button>
+                    <span id="current-week">Текущая неделя</span>
+                    <button class="btn-icon" id="next-week">›</button>
+                </div>
+
+                <div id="schedule-list"></div>
+            </div>
+
+            <!-- Настройки -->
+            <div id="page-settings" class="page">
+                <div class="page-header">
+                    <h2>Настройки</h2>
+                </div>
+
+                <div class="settings-list">
+                    <div class="settings-item">
+                        <div class="settings-item-text">
+                            <div class="settings-item-title">Telegram ID</div>
+                            <div class="settings-item-value" id="telegram-id">—</div>
+                        </div>
+                    </div>
+
+                    <div class="settings-item">
+                        <div class="settings-item-text">
+                            <div class="settings-item-title">Логин СДО</div>
+                            <div class="settings-item-value" id="sdo-login">—</div>
+                        </div>
+                    </div>
+
+                    <div class="settings-divider"></div>
+
+                    <div class="settings-item clickable" onclick="toggleNotifications()">
+                        <div class="settings-item-text">
+                            <div class="settings-item-title">Уведомления</div>
+                            <div class="settings-item-desc">О новых заданиях и материалах</div>
+                        </div>
+                        <div class="settings-item-toggle">
+                            <input type="checkbox" id="notifications-toggle" checked>
+                        </div>
+                    </div>
+
+                    <div class="settings-item clickable" onclick="toggleDarkTheme()">
+                        <div class="settings-item-text">
+                            <div class="settings-item-title">Темная тема</div>
+                            <div class="settings-item-desc">Включить темное оформление</div>
+                        </div>
+                        <div class="settings-item-toggle">
+                            <input type="checkbox" id="theme-toggle">
+                        </div>
+                    </div>
+
+                    <div class="settings-divider"></div>
+
+                    <button class="settings-button danger" onclick="logout()">
+                        Выйти из СДО
+                    </button>
+
+                    <button class="settings-button" onclick="refreshData()">
+                        🔄 Обновить данные
+                    </button>
+                </div>
+
+                <div class="app-info">
+                    <p>UniFlow v1.0.0</p>
+                    <p>Современный интерфейс для СДО РГСУ</p>
+                    <p>Сделано студентами для студентов ❤️</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

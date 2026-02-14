@@ -1,0 +1,667 @@
+/* ============================================================================
+   UniFlow Telegram Mini App Styles
+   Оптимизировано для Telegram
+   ============================================================================ */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    /* Telegram переменные (автоматически заполняются) */
+    --tg-theme-bg-color: #ffffff;
+    --tg-theme-text-color: #000000;
+    --tg-theme-hint-color: #999999;
+    --tg-theme-link-color: #2481cc;
+    --tg-theme-button-color: #2481cc;
+    --tg-theme-button-text-color: #ffffff;
+    --tg-theme-secondary-bg-color: #f4f4f5;
+
+    /* UniFlow цвета */
+    --primary: #667eea;
+    --primary-dark: #5568d3;
+    --gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+
+    --success: #48bb78;
+    --warning: #ed8936;
+    --danger: #f56565;
+
+    /* Размеры */
+    --tabs-height: 60px;
+    --radius: 12px;
+    --spacing: 16px;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--tg-theme-bg-color);
+    color: var(--tg-theme-text-color);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    overscroll-behavior: none;
+    user-select: none;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* ============================================================================
+   LOADING SCREEN
+   ============================================================================ */
+
+.loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--gradient);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    color: white;
+}
+
+.loading-spinner {
+    width: 50px;
+    height: 50px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* ============================================================================
+   AUTH SCREEN
+   ============================================================================ */
+
+.auth-screen {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: var(--tg-theme-bg-color);
+}
+
+.auth-container {
+    width: 100%;
+    max-width: 400px;
+}
+
+.auth-header {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.logo {
+    font-size: 64px;
+    margin-bottom: 16px;
+}
+
+.auth-header h1 {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.auth-header p {
+    color: var(--tg-theme-hint-color);
+    font-size: 14px;
+}
+
+#auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--tg-theme-text-color);
+}
+
+.form-group input {
+    padding: 14px 16px;
+    border: 1px solid var(--tg-theme-hint-color);
+    border-radius: var(--radius);
+    font-size: 16px;
+    background: var(--tg-theme-bg-color);
+    color: var(--tg-theme-text-color);
+    outline: none;
+}
+
+.form-group input:focus {
+    border-color: var(--primary);
+}
+
+.form-note {
+    font-size: 13px;
+    color: var(--tg-theme-hint-color);
+    padding: 12px;
+    background: var(--tg-theme-secondary-bg-color);
+    border-radius: var(--radius);
+    text-align: center;
+}
+
+.btn-primary {
+    background: var(--gradient);
+    color: white;
+    border: none;
+    padding: 16px;
+    border-radius: var(--radius);
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.btn-primary:active {
+    opacity: 0.8;
+}
+
+.error-message {
+    background: #fee;
+    border: 1px solid var(--danger);
+    border-radius: var(--radius);
+    padding: 12px;
+    color: var(--danger);
+    font-size: 14px;
+    margin-top: 16px;
+}
+
+/* ============================================================================
+   APP LAYOUT
+   ============================================================================ */
+
+#app {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: var(--tg-theme-bg-color);
+}
+
+/* Табы */
+.tabs {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: var(--tabs-height);
+    background: var(--tg-theme-secondary-bg-color);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    z-index: 100;
+    padding-bottom: env(safe-area-inset-bottom);
+}
+
+.tab {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    background: none;
+    border: none;
+    padding: 8px 12px;
+    color: var(--tg-theme-hint-color);
+    cursor: pointer;
+    transition: all 0.2s;
+    flex: 1;
+}
+
+.tab.active {
+    color: var(--primary);
+}
+
+.tab-icon {
+    font-size: 24px;
+}
+
+.tab-label {
+    font-size: 11px;
+    font-weight: 500;
+}
+
+/* Контент */
+.content {
+    flex: 1;
+    padding-bottom: calc(var(--tabs-height) + 16px);
+}
+
+.page {
+    display: none;
+    animation: fadeIn 0.3s ease;
+}
+
+.page.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.page-header {
+    padding: 20px var(--spacing);
+    background: var(--gradient);
+    color: white;
+}
+
+.page-header h2 {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.page-header p {
+    opacity: 0.9;
+    font-size: 14px;
+}
+
+/* ============================================================================
+   DASHBOARD
+   ============================================================================ */
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    padding: var(--spacing);
+}
+
+.stat-card {
+    background: var(--tg-theme-secondary-bg-color);
+    padding: 16px;
+    border-radius: var(--radius);
+    text-align: center;
+}
+
+.stat-icon {
+    font-size: 32px;
+    margin-bottom: 8px;
+}
+
+.stat-value {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 4px;
+}
+
+.stat-label {
+    font-size: 12px;
+    color: var(--tg-theme-hint-color);
+}
+
+.section {
+    padding: 0 var(--spacing) var(--spacing);
+    margin-top: 24px;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.section-header h3 {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.btn-link {
+    background: none;
+    border: none;
+    color: var(--primary);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+/* ============================================================================
+   КУРСЫ
+   ============================================================================ */
+
+.search-box {
+    padding: var(--spacing);
+}
+
+.search-box input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: var(--radius);
+    font-size: 15px;
+    background: var(--tg-theme-secondary-bg-color);
+    color: var(--tg-theme-text-color);
+    outline: none;
+}
+
+#courses-list {
+    padding: 0 var(--spacing) var(--spacing);
+}
+
+.course-card {
+    background: var(--tg-theme-secondary-bg-color);
+    border-radius: var(--radius);
+    padding: 16px;
+    margin-bottom: 12px;
+}
+
+.course-card h3 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.course-card p {
+    font-size: 13px;
+    color: var(--tg-theme-hint-color);
+    margin-bottom: 12px;
+}
+
+.course-footer {
+    display: flex;
+    gap: 8px;
+}
+
+.course-btn {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.course-btn.primary {
+    background: var(--primary);
+    color: white;
+}
+
+.course-btn.secondary {
+    background: var(--tg-theme-bg-color);
+    color: var(--primary);
+}
+
+.course-btn:active {
+    opacity: 0.7;
+}
+
+/* ============================================================================
+   РАСПИСАНИЕ
+   ============================================================================ */
+
+.week-selector {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing);
+    gap: 16px;
+}
+
+.week-selector span {
+    flex: 1;
+    text-align: center;
+    font-weight: 600;
+}
+
+.btn-icon {
+    width: 40px;
+    height: 40px;
+    border: none;
+    background: var(--tg-theme-secondary-bg-color);
+    border-radius: 50%;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.2s;
+}
+
+.btn-icon:active {
+    opacity: 0.7;
+}
+
+#schedule-list {
+    padding: 0 var(--spacing) var(--spacing);
+}
+
+.lesson-card {
+    background: var(--tg-theme-secondary-bg-color);
+    border-radius: var(--radius);
+    padding: 16px;
+    margin-bottom: 12px;
+    border-left: 4px solid var(--primary);
+}
+
+.lesson-time {
+    display: inline-block;
+    background: var(--primary);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.lesson-card h3 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.lesson-card p {
+    font-size: 13px;
+    color: var(--tg-theme-hint-color);
+    margin-bottom: 4px;
+}
+
+.lesson-type {
+    display: inline-block;
+    background: rgba(102, 126, 234, 0.1);
+    color: var(--primary);
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    margin-top: 8px;
+}
+
+/* ============================================================================
+   НАСТРОЙКИ
+   ============================================================================ */
+
+.settings-list {
+    padding: var(--spacing);
+}
+
+.settings-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 0;
+}
+
+.settings-item.clickable {
+    cursor: pointer;
+}
+
+.settings-item.clickable:active {
+    opacity: 0.6;
+}
+
+.settings-item-text {
+    flex: 1;
+}
+
+.settings-item-title {
+    font-size: 15px;
+    font-weight: 500;
+    margin-bottom: 2px;
+}
+
+.settings-item-value,
+.settings-item-desc {
+    font-size: 13px;
+    color: var(--tg-theme-hint-color);
+}
+
+.settings-item-toggle input {
+    width: 50px;
+    height: 28px;
+    appearance: none;
+    background: var(--tg-theme-hint-color);
+    border-radius: 14px;
+    position: relative;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.settings-item-toggle input:checked {
+    background: var(--primary);
+}
+
+.settings-item-toggle input::before {
+    content: '';
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: white;
+    top: 2px;
+    left: 2px;
+    transition: transform 0.2s;
+}
+
+.settings-item-toggle input:checked::before {
+    transform: translateX(22px);
+}
+
+.settings-divider {
+    height: 1px;
+    background: rgba(0, 0, 0, 0.1);
+    margin: 8px 0;
+}
+
+.settings-button {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: var(--radius);
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    margin-top: 12px;
+    background: var(--tg-theme-secondary-bg-color);
+    color: var(--tg-theme-text-color);
+}
+
+.settings-button.danger {
+    background: var(--danger);
+    color: white;
+}
+
+.settings-button:active {
+    opacity: 0.7;
+}
+
+.app-info {
+    text-align: center;
+    padding: 32px var(--spacing);
+    color: var(--tg-theme-hint-color);
+    font-size: 13px;
+}
+
+.app-info p {
+    margin-bottom: 4px;
+}
+
+/* ============================================================================
+   АДАПТИВНОСТЬ
+   ============================================================================ */
+
+@media (max-width: 360px) {
+    .stats {
+        grid-template-columns: 1fr;
+    }
+
+    .tab-label {
+        font-size: 10px;
+    }
+}
+
+/* Safe area для iPhone */
+@supports (padding: max(0px)) {
+    .tabs {
+        padding-bottom: max(8px, env(safe-area-inset-bottom));
+    }
+}
+
+/* ============================================================================
+   TELEGRAM DARK THEME
+   ============================================================================ */
+
+body.dark-theme {
+    --tg-theme-bg-color: #212121;
+    --tg-theme-text-color: #ffffff;
+    --tg-theme-hint-color: #aaaaaa;
+    --tg-theme-secondary-bg-color: #0f0f0f;
+}
+
+.dark-theme .form-group input,
+.dark-theme .search-box input {
+    border-color: #3a3a3a;
+}
+
+.dark-theme .tabs {
+    border-top-color: rgba(255, 255, 255, 0.1);
+}
+
+/* ============================================================================
+   АНИМАЦИИ
+   ============================================================================ */
+
+.pulse {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* Haptic feedback имитация */
+@keyframes haptic {
+    0% { transform: scale(1); }
+    50% { transform: scale(0.95); }
+    100% { transform: scale(1); }
+}
+
+.haptic:active {
+    animation: haptic 0.1s ease;
+}
